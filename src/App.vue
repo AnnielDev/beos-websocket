@@ -135,3 +135,63 @@ onUnmounted(() => {
   }
 });
 </script>
+
+<!-- 
+## EXAMPLE WITH subscribe|unsubscribe ##
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from "vue";
+import {
+  BeosSocketConnection,
+  BeosWebSocket,
+} from "./utils/BeosSocketConnection";
+
+interface User {
+  name: string;
+  lastName: string;
+  age: number | null;
+  sex: string;
+}
+
+const form = ref<User>({
+  name: "",
+  lastName: "",
+  age: null,
+  sex: "",
+});
+
+const user = ref<User>({
+  name: "",
+  lastName: "",
+  age: null,
+  sex: "",
+});
+
+const wsc = ref<BeosWebSocket>(BeosSocketConnection());
+
+const onUserCreated = (data: User) => {
+  user.value = data;
+};
+
+const handleSubmit = () => {
+  if (!wsc.value) {
+    alert("❌ No hay conexión WebSocket activa");
+    return;
+  }
+
+  wsc.value.send({
+    event: "create-user",
+    data: form.value,
+  });
+};
+
+onMounted(() => {
+  wsc.value.subscribe("create-user", onUserCreated);
+});
+
+onUnmounted(() => {
+  if (wsc.value) {
+    wsc.value.unsubscribe("create-user", onUserCreated);
+  }
+});
+</script>
+-->

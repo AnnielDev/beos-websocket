@@ -12,7 +12,7 @@ const BeosSocketConnection = ({ protocols }: Props = {}): BeosWebSocket => {
   });
 
   ws.on("close", () => {
-    alert("❌ Conexión WebSocket cerrada");
+    console.log("❌ Conexión WebSocket cerrada");
   });
 
   ws.on("error", (error) => {
